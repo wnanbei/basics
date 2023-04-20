@@ -13,7 +13,7 @@ func TestMySQLGenerator(t *testing.T) {
 		t.Fatal(err)
 	}
 
-	generator, err := NewGenerator(conf.MySQL, "../database")
+	generator, err := NewModelGenerator(conf.MySQL, "../model")
 	if err != nil {
 		t.Fatal(err)
 	}
