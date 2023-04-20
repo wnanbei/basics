@@ -1,10 +1,13 @@
 package config
 
+import "golang.org/x/exp/slog"
+
 // Config 通用配置模版
 type Config struct {
 	Server Server `json:"server" mapstructure:"server"` // 服务端配置
 	MySQL  MySQL  `json:"mysql" mapstructure:"mysql"`   // MySQL 数据库配置
 	Redis  Redis  `json:"redis" mapstructure:"redis"`   // Redis 数据库配置
+	Log    Log    `json:"log" mapstructure:"log"`       // Log 日志配置
 }
 
 // Server 常用配置
@@ -41,4 +44,14 @@ type Redis struct {
 	Port     string `json:"port" mapstructure:"port"`
 	Password string `json:"password" mapstructure:"password"`
 	Database string `json:"database" mapstructure:"database"`
+}
+
+// Log 日志配置
+type Log struct {
+	Path       string     `json:"path" mapstructure:"path"`               // 日志存放路径
+	Filename   string     `json:"filename" mapstructure:"filename"`       // 日志文件名
+	Level      slog.Level `json:"level" mapstructure:"level"`             // 日志级别。-4:debug, 0:info, 4:warn, 8:error
+	MaxSize    int        `json:"max_size" mapstructure:"max_size"`       // 单个日志文件最大大小，单位：MB
+	MaxBackups int        `json:"max_backups" mapstructure:"max_backups"` // 最多保存多少个日志文件
+	MaxAge     int        `json:"max_age" mapstructure:"max_age"`         // 最多保存多长时间的日志文件，单位：天
 }
