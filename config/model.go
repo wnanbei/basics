@@ -30,7 +30,7 @@ const (
 type MySQL struct {
 	Host     string `json:"host" mapstructure:"host"`
 	Port     string `json:"port" mapstructure:"port"`
-	UserName string `json:"user_name" mapstructure:"user_name"`
+	UserName string `json:"username" mapstructure:"username"`
 	Password string `json:"password" mapstructure:"password"`
 	Database string `json:"database" mapstructure:"database"`
 }

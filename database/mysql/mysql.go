@@ -5,6 +5,7 @@ import (
 
 	"github.com/galaxy-toolkit/server/config"
 	"gorm.io/driver/mysql"
+	"gorm.io/gen"
 	"gorm.io/gorm"
 )
 
@@ -32,4 +33,21 @@ func New(conf config.MySQL) (*gorm.DB, error) {
 	}
 
 	return db, nil
+}
+
+// NewGenerator 创建 Gorm 生成器
+func NewGenerator(conf config.MySQL, output string) (*gen.Generator, error) {
+	db, err := New(conf)
+	if err != nil {
+		return nil, err
+	}
+
+	generator := gen.NewGenerator(gen.Config{
+		OutPath:       output, // output directory, default value is ./query
+		Mode:          gen.WithDefaultQuery | gen.WithQueryInterface,
+		FieldNullable: true,
+	})
+
+	generator.UseDB(db)
+	return generator, nil
 }
