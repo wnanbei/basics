@@ -1,0 +1,24 @@
+server:
+  host: "localhost"
+  port: "9999"
+  basePath: "/"
+  version: "v1.0.0"
+  enableSwagger: true # 是否开启 swagger 文档
+  globalLimiterMax: 1000 # 全局限流器每分钟最大请求数量
+
+log:
+  level: -4 # debug -4, Info 0, Warn 4, Error 8
+  path: "logs"
+
+mysql:
+  host: "127.0.0.1"
+  port: "3306"
+  username: "root"
+  password: "123456"
+  dbname: ""
+redis:
+  host: "127.0.0.1"
+  port: "6379"
+  username: ""
+  password: ""
+  database: 0
