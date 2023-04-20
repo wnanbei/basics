@@ -8,7 +8,7 @@ import (
 func TestLoadConfig(t *testing.T) {
 	var config Config
 
-	err := Load[Config]("config_test.yaml", &config)
+	err := Load[Config]("", &config)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -19,7 +19,7 @@ func TestLoadConfig(t *testing.T) {
 func TestLoadAndWatchConfig(t *testing.T) {
 	var config Config
 
-	err := LoadAndWatch[Config]("config_test.yaml", &config)
+	err := LoadAndWatch[Config]("", &config)
 	if err != nil {
 		t.Fatal(err)
 	}

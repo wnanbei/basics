@@ -1,6 +1,8 @@
 package config
 
 import (
+	"os"
+	"path/filepath"
 	"sync"
 
 	"github.com/fsnotify/fsnotify"
@@ -13,6 +15,10 @@ var changeConfigLock sync.RWMutex
 
 // Load 初始化读取配置
 func Load[C any](path string, c *C) error {
+	if path == "" {
+		path = defaultConfigPath("config.json")
+	}
+
 	// 读取配置
 	viper.SetConfigFile(path)
 	if err := viper.ReadInConfig(); err != nil {
@@ -29,6 +35,10 @@ func Load[C any](path string, c *C) error {
 
 // LoadAndWatch 初始化读取配置，并监控配置变化
 func LoadAndWatch[C any](path string, c *C) error {
+	if path == "" {
+		path = defaultConfigPath("config.json")
+	}
+
 	// 读取配置
 	viper.SetConfigFile(path)
 	if err := viper.ReadInConfig(); err != nil {
@@ -54,4 +64,36 @@ func LoadAndWatch[C any](path string, c *C) error {
 	viper.WatchConfig()
 
 	return nil
+}
+
+// defaultConfigPath 获取默认的配置文件路径，为 go.mod 文件所处的位置
+func defaultConfigPath(filename string) string {
+	if filename == "" {
+		filename = "config.json"
+	}
+	return filepath.Join(goModDir(""), filename)
+}
+
+// goModDir 逐层往上寻找 go.mod 文件，并返回他的父级文件夹的地址.
+func goModDir(currentDir string) string {
+	if currentDir == "" {
+		currentDir, _ = os.Getwd()
+	}
+
+	if currentDir == string(os.PathSeparator) {
+		return ""
+	}
+
+	f := filepath.Join(currentDir, "go.mod")
+	_, err := os.Stat(f)
+	if err == nil {
+		// 找到了.
+		return filepath.Dir(f)
+	}
+
+	if os.IsNotExist(err) {
+		return goModDir(filepath.Dir(currentDir))
+	}
+	// 权限错误 或者没有找到 返回空
+	return ""
 }
