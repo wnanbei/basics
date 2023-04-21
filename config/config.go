@@ -49,6 +49,7 @@ func LoadAndWatch[C any](path string, c *C) error {
 	if err := viper.Unmarshal(c); err != nil {
 		return err
 	}
+	slog.Info("config read completed", slog.Any("config", *c))
 
 	// 监控配置文件
 	viper.OnConfigChange(func(e fsnotify.Event) {
