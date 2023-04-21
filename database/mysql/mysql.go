@@ -36,14 +36,16 @@ func New(conf config.MySQL) (*gorm.DB, error) {
 }
 
 // NewModelGenerator 创建 Gorm 生成器
-func NewModelGenerator(conf config.MySQL, output string) (*gen.Generator, error) {
+func NewModelGenerator(conf config.MySQL, queryPath, queryFilename, modelPath string) (*gen.Generator, error) {
 	db, err := New(conf)
 	if err != nil {
 		return nil, err
 	}
 
 	generator := gen.NewGenerator(gen.Config{
-		ModelPkgPath:      output,
+		OutPath:           queryPath,
+		OutFile:           queryFilename,
+		ModelPkgPath:      modelPath,
 		WithUnitTest:      true,
 		Mode:              gen.WithDefaultQuery | gen.WithQueryInterface,
 		FieldNullable:     true,
