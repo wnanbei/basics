@@ -18,6 +18,7 @@ type Server struct {
 	BasePath      string `json:"base_path" mapstructure:"base_path"`           // 根路径
 	Env           Env    `json:"env" mapstructure:"env"`                       // 所属环境
 	EnableSwagger bool   `json:"enable_swagger" mapstructure:"enable_swagger"` // 是否开启 swagger 文档
+	Title         string `json:"title" mapstructure:"title"`                   // 服务标题名称，用于 swagger
 }
 
 // Env 运行环境
