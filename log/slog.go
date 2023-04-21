@@ -1,6 +1,7 @@
 package log
 
 import (
+	"io"
 	"os"
 	"path/filepath"
 
@@ -10,16 +11,9 @@ import (
 )
 
 // New 创建日志实例
-func New(log config.Log) (*slog.Logger, error) {
+func New(log config.Log, writer io.Writer) (*slog.Logger, error) {
 	if err := os.MkdirAll(log.Path, 0777); err != nil {
 		return nil, err
-	}
-
-	writer := &lumberjack.Logger{
-		Filename:   filepath.Join(log.Path, log.Filename),
-		MaxSize:    log.MaxSize,
-		MaxBackups: log.MaxBackups,
-		MaxAge:     log.MaxAge,
 	}
 
 	opts := slog.HandlerOptions{
@@ -29,4 +23,14 @@ func New(log config.Log) (*slog.Logger, error) {
 	}
 
 	return slog.New(opts.NewJSONHandler(writer)), nil
+}
+
+// Writer 获取滚动写入日志 writer
+func Writer(log config.Log) io.Writer {
+	return &lumberjack.Logger{
+		Filename:   filepath.Join(log.Path, log.Filename),
+		MaxSize:    log.MaxSize,
+		MaxBackups: log.MaxBackups,
+		MaxAge:     log.MaxAge,
+	}
 }
