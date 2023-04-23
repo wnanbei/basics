@@ -35,17 +35,24 @@ func New(conf config.MySQL) (*gorm.DB, error) {
 	return db, nil
 }
 
-// NewModelGenerator 创建 Gorm 生成器
-func NewModelGenerator(conf config.MySQL, queryPath, queryFilename, modelPath string) (*gen.Generator, error) {
+// GeneratorConfig 创建生成器配置
+type GeneratorConfig struct {
+	QueryPath     string // dao 层方法生成路径
+	QueryFilename string // 数据库层生成文件名
+	ModelPath     string // 模型生成路径
+}
+
+// NewGenerator 创建 Gorm 生成器
+func NewGenerator(conf config.MySQL, gConf GeneratorConfig) (*gen.Generator, error) {
 	db, err := New(conf)
 	if err != nil {
 		return nil, err
 	}
 
 	generator := gen.NewGenerator(gen.Config{
-		OutPath:           queryPath,
-		OutFile:           queryFilename,
-		ModelPkgPath:      modelPath,
+		OutPath:           gConf.QueryPath,
+		OutFile:           gConf.QueryFilename,
+		ModelPkgPath:      gConf.ModelPath,
 		WithUnitTest:      true,
 		Mode:              gen.WithDefaultQuery | gen.WithQueryInterface,
 		FieldNullable:     true,

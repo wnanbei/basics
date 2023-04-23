@@ -16,7 +16,7 @@ var changeConfigLock sync.RWMutex
 // Load 初始化读取配置
 func Load[C any](path string, c *C) error {
 	if path == "" {
-		path = defaultConfigPath("config.json")
+		path = defaultConfigPath("config.yaml")
 	}
 
 	// 读取配置
@@ -36,7 +36,7 @@ func Load[C any](path string, c *C) error {
 // LoadAndWatch 初始化读取配置，并监控配置变化
 func LoadAndWatch[C any](path string, c *C) error {
 	if path == "" {
-		path = defaultConfigPath("config.json")
+		path = defaultConfigPath("config.yaml")
 	}
 
 	// 读取配置

@@ -1,4 +1,4 @@
-package mysql
+package postgres
 
 import (
 	"testing"
@@ -13,7 +13,7 @@ func TestMySQLGenerator(t *testing.T) {
 		t.Fatal(err)
 	}
 
-	generator, err := NewGenerator(conf.Database.MySQL, GeneratorConfig{ModelPath: "./model"})
+	generator, err := NewGenerator(conf.Database.Postgres, GeneratorConfig{ModelPath: "./model"})
 	if err != nil {
 		t.Fatal(err)
 	}
