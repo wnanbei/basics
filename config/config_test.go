@@ -8,7 +8,7 @@ import (
 func TestLoadConfig(t *testing.T) {
 	var config Config
 
-	err := Load[Config]("", &config)
+	err := Load("", &config)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -19,7 +19,7 @@ func TestLoadConfig(t *testing.T) {
 func TestLoadAndWatchConfig(t *testing.T) {
 	var config Config
 
-	err := LoadAndWatch[Config]("", &config)
+	err := LoadAndWatch("", &config)
 	if err != nil {
 		t.Fatal(err)
 	}
