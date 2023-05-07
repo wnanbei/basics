@@ -19,10 +19,10 @@ type DataResponse[DATA any] struct {
 
 // PageResponse 分页查询内层响应
 type PageResponse[DATA any] struct {
-	Page     int  `json:"page"`      // 当前页
-	PageSize int  `json:"page_size"` // 每页大小
-	Total    int  `json:"total"`     // 总数
-	Data     DATA `json:"data"`      // 数据
+	Page     int   `json:"page"`      // 当前页
+	PageSize int   `json:"page_size"` // 每页大小
+	Total    int64 `json:"total"`     // 总数
+	Data     DATA  `json:"data"`      // 数据
 }
 
 // SendOk 请求响应成功
@@ -33,8 +33,8 @@ func SendOk(ctx *fiber.Ctx) error {
 	})
 }
 
-// SendFail 请求失败
-func SendFail(ctx *fiber.Ctx) error {
+// SendFailed 请求失败
+func SendFailed(ctx *fiber.Ctx) error {
 	return ctx.JSON(BasicResponse{
 		Code: code.Failed,
 		Msg:  code.GetMsg(code.Failed),
@@ -72,7 +72,7 @@ func SendDataCode[DATA any](ctx *fiber.Ctx, data DATA, c code.Code) error {
 }
 
 // SendPageDataOk 请求响应成功，并返回分页数据
-func SendPageDataOk[DATA any](ctx *fiber.Ctx, data DATA, page, pageSize, total int) error {
+func SendPageDataOk[DATA any](ctx *fiber.Ctx, data DATA, page, pageSize int, total int64) error {
 	return ctx.JSON(DataResponse[PageResponse[DATA]]{
 		BasicResponse: BasicResponse{
 			Code: code.SUCCESS,
