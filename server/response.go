@@ -25,6 +25,12 @@ type PageResponse[DATA any] struct {
 	Data     DATA  `json:"data"`      // 数据
 }
 
+// ParamsParseFailedResponse 参数解析失败响应
+type ParamsParseFailedResponse struct {
+	BasicResponse
+	FailedFields []*FailedField `json:"failed_fields"` // 异常字段
+}
+
 // SendOk 请求响应成功
 func SendOk(ctx *fiber.Ctx) error {
 	return ctx.JSON(BasicResponse{
@@ -84,5 +90,16 @@ func SendPageDataOk[DATA any](ctx *fiber.Ctx, data DATA, page, pageSize int, tot
 			Total:    total,
 			Data:     data,
 		},
+	})
+}
+
+// SendParamsParseFailed 返回解析失败的字段信息
+func SendParamsParseFailed(ctx *fiber.Ctx, failedFields []*FailedField) error {
+	return ctx.JSON(ParamsParseFailedResponse{
+		BasicResponse: BasicResponse{
+			Code: code.ParamsParseFailed,
+			Msg:  code.GetMsg(code.ParamsParseFailed),
+		},
+		FailedFields: failedFields,
 	})
 }
