@@ -4,12 +4,9 @@ import (
 	"context"
 
 	"gorm.io/gorm"
-	"gorm.io/gorm/schema"
 )
 
-type MODEL interface {
-	schema.Tabler
-}
+type MODEL any
 
 // IDao 数据访问层
 type IDao[M MODEL] interface {
@@ -20,8 +17,6 @@ type IDao[M MODEL] interface {
 	UpdateByID(id int64, values map[string]any) (int64, error)
 	DeleteManyByIDs(ids []int64) (int64, error)
 	Find(page, pageSize int) ([]*M, int64, error)
-
-	Clone(db *gorm.DB) *Dao[M]
 }
 
 // NewDao 创建数据访问层
