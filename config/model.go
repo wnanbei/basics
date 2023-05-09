@@ -69,5 +69,5 @@ type Redis struct {
 	Host     string `json:"host" mapstructure:"host"`
 	Port     string `json:"port" mapstructure:"port"`
 	Password string `json:"password" mapstructure:"password"`
-	Database string `json:"database" mapstructure:"database"`
+	Database int    `json:"database" mapstructure:"database"`
 }
