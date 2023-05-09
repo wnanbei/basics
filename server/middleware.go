@@ -15,7 +15,7 @@ import (
 func NewLoggerHandler(conf config.Server, outputWriter io.Writer) fiber.Handler {
 	loggerConfig := logger.Config{
 		Next:         nil,
-		Format:       "[${time}] ${status} - ${latency} ${method} ${path} ${queryParams}\n",
+		Format:       "[${time}] ${method} ${path} ${status} ${latency} - ${locals:requestid} - query[${queryParams}] body[${body}]\n",
 		TimeFormat:   "2006-01-02 15:04:05",
 		TimeZone:     "Local",
 		TimeInterval: 500 * time.Millisecond,
