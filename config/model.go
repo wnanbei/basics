@@ -67,7 +67,7 @@ type Postgres struct {
 // Redis 数据库配置
 type Redis struct {
 	Host     string `json:"host" mapstructure:"host"`
-	Port     string `json:"port" mapstructure:"port"`
+	Port     int    `json:"port" mapstructure:"port"`
 	Password string `json:"password" mapstructure:"password"`
 	Database int    `json:"database" mapstructure:"database"`
 }

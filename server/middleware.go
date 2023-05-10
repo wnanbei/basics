@@ -2,12 +2,15 @@ package server
 
 import (
 	"io"
+	"runtime"
 	"time"
 
 	"github.com/galaxy-toolkit/server/config"
 	"github.com/gofiber/fiber/v2"
 	"github.com/gofiber/fiber/v2/middleware/limiter"
 	"github.com/gofiber/fiber/v2/middleware/logger"
+	"github.com/gofiber/fiber/v2/middleware/session"
+	"github.com/gofiber/storage/redis/v2"
 	"github.com/spf13/viper"
 )
 
@@ -40,4 +43,30 @@ func NewLimiterHandler(conf config.Server) fiber.Handler {
 		LimiterMiddleware:      limiter.SlidingWindow{},
 	}
 	return limiter.New(limiterConfig)
+}
+
+// NewSessionStore 创建 session 存储
+func NewSessionStore(conf config.Redis) *session.Store {
+	store := redis.New(redis.Config{
+		Host:      conf.Host,
+		Port:      conf.Port,
+		Username:  "",
+		Password:  conf.Password,
+		Database:  conf.Database,
+		Reset:     false,
+		TLSConfig: nil,
+		PoolSize:  10 * runtime.GOMAXPROCS(0),
+	})
+
+	return session.New(session.Config{
+		Expiration:        24 * time.Hour,
+		Storage:           store,
+		KeyLookup:         "cookie:session_id",
+		CookieDomain:      "",
+		CookiePath:        "",
+		CookieSecure:      false,
+		CookieHTTPOnly:    false,
+		CookieSameSite:    "Lax",
+		CookieSessionOnly: false,
+	})
 }
