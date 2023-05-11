@@ -1,6 +1,7 @@
 package server
 
 import (
+	"github.com/gofiber/fiber/v2/utils"
 	"io"
 	"runtime"
 	"time"
@@ -68,5 +69,8 @@ func NewSessionStore(conf config.Redis) *session.Store {
 		CookieHTTPOnly:    false,
 		CookieSameSite:    "Lax",
 		CookieSessionOnly: false,
+		KeyGenerator: func() string {
+			return "session:" + utils.UUIDv4()
+		},
 	})
 }

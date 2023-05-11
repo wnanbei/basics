@@ -8,10 +8,11 @@ require (
 	github.com/gofiber/fiber/v2 v2.44.0
 	github.com/json-iterator/go v1.1.12
 	github.com/redis/go-redis/v9 v9.0.4
+	github.com/gofiber/storage/redis/v2 v2.0.0
 	github.com/spf13/viper v1.15.0
 	golang.org/x/exp v0.0.0-20230419192730-864b3d6c5c2c
-	gopkg.in/natefinch/lumberjack.v2 v2.2.1
 	gorm.io/driver/mysql v1.5.0
+	gopkg.in/natefinch/lumberjack.v2 v2.2.1
 	gorm.io/driver/postgres v1.4.5
 	gorm.io/gen v0.3.22
 	gorm.io/gorm v1.25.0
@@ -24,7 +25,6 @@ require (
 	github.com/go-playground/locales v0.14.1 // indirect
 	github.com/go-playground/universal-translator v0.18.1 // indirect
 	github.com/go-sql-driver/mysql v1.7.0 // indirect
-	github.com/gofiber/storage/redis/v2 v2.0.0 // indirect
 	github.com/google/uuid v1.3.0 // indirect
 	github.com/hashicorp/hcl v1.0.0 // indirect
 	github.com/jackc/chunkreader/v2 v2.0.1 // indirect

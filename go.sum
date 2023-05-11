@@ -93,6 +93,7 @@ github.com/gofiber/fiber/v2 v2.44.0 h1:Z90bEvPcJM5GFJnu1py0E1ojoerkyew3iiNJ78MQC
 github.com/gofiber/fiber/v2 v2.44.0/go.mod h1:VTMtb/au8g01iqvHyaCzftuM/xmZgKOZCtFzz6CdV9w=
 github.com/gofiber/storage/redis/v2 v2.0.0 h1:LjNEWZnI89ZVbAU2fZqaYIJIfSeynyL7WCMfrvow4y8=
 github.com/gofiber/storage/redis/v2 v2.0.0/go.mod h1:StVVsVRhL8KfnFWCoQkMpQ6Ej9BacT3WLyRYrqxEeWc=
+github.com/gofiber/utils v1.0.1 h1:knct4cXwBipWQqFrOy1Pv6UcgPM+EXo9jDgc66V1Qio=
 github.com/gofrs/uuid v4.0.0+incompatible h1:1SD/1F5pU8p29ybwgQSwpQk+mwdRrXCYuPhW6m+TnJw=
 github.com/gofrs/uuid v4.0.0+incompatible/go.mod h1:b2aQJv3Z4Fp6yNu3cdSllBxTCLRxnplIgP/c0N/04lM=
 github.com/golang-sql/civil v0.0.0-20220223132316-b832511892a9 h1:au07oEsX2xN0ktxqI+Sida1w446QrXBRJ0nee3SNZlA=
