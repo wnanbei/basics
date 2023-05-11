@@ -6,8 +6,11 @@ type Code int
 const (
 	SUCCESS Code = 0 // SUCCESS 请求成功
 
-	Failed            Code = -1 // ERROR 请求失败
+	Failed            Code = -1 // Failed 请求失败
 	ParamsParseFailed Code = -2 // ParamsParseFailed 参数解析失败
+
+	UserNotFound  Code = -10000 // UserNotFound 用户不存在
+	PasswordError Code = -10001 // PasswordError 密码错误
 )
 
 var codeMsg = map[Code]string{
@@ -15,6 +18,9 @@ var codeMsg = map[Code]string{
 
 	Failed:            "failed",
 	ParamsParseFailed: "params parse failed",
+
+	UserNotFound:  "user not found",
+	PasswordError: "password error",
 }
 
 // GetMsg 获取请求状态码
