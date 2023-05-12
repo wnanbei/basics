@@ -36,8 +36,8 @@ type Error struct {
 }
 
 // NewError 构造 error
-func NewError(code Code, err error) Error {
-	return Error{
+func NewError(code Code, err error) *Error {
+	return &Error{
 		Code: code,
 		Err:  err,
 	}
