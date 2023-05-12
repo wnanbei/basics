@@ -5,9 +5,14 @@ import (
 	"encoding/hex"
 )
 
+const (
+	PasswordMD5Salt    = "ippool" // PasswordMD5Salt 密码加密盐
+	TimesOfPasswordMD5 = 2        // TimesOfPasswordMD5 密码加密次数
+)
+
 // ComparePassword 对比密码是否匹配
 func ComparePassword(password, hash string) bool {
-	return MD5(password, "ippool", 2) == hash
+	return MD5(password, PasswordMD5Salt, TimesOfPasswordMD5) == hash
 }
 
 // MD5 多次加密，并加盐

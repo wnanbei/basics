@@ -10,7 +10,8 @@ const (
 	ParamsParseFailed Code = -2 // ParamsParseFailed 参数解析失败
 
 	UserNotFound  Code = -10000 // UserNotFound 用户不存在
-	PasswordError Code = -10001 // PasswordError 密码错误
+	UserExisted   Code = -10001 // UserExisted 用户已存在
+	PasswordError Code = -10002 // PasswordError 密码错误
 )
 
 var codeMsg = map[Code]string{
