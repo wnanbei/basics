@@ -31,9 +31,14 @@ type ParamsParseFailedResponse struct {
 	FailedFields []*FailedField `json:"failed_fields"` // 异常字段
 }
 
+// SendJson 返回 json 响应。用于收拢响应返回
+func SendJson(ctx *fiber.Ctx, data any) error {
+	return ctx.JSON(data)
+}
+
 // SendOk 请求响应成功
 func SendOk(ctx *fiber.Ctx) error {
-	return ctx.JSON(BasicResponse{
+	return SendJson(ctx, BasicResponse{
 		Code: code.SUCCESS,
 		Msg:  code.GetMsg(code.SUCCESS),
 	})
@@ -41,7 +46,7 @@ func SendOk(ctx *fiber.Ctx) error {
 
 // SendFailed 请求失败
 func SendFailed(ctx *fiber.Ctx) error {
-	return ctx.JSON(BasicResponse{
+	return SendJson(ctx, BasicResponse{
 		Code: code.Failed,
 		Msg:  code.GetMsg(code.Failed),
 	})
@@ -49,7 +54,7 @@ func SendFailed(ctx *fiber.Ctx) error {
 
 // SendCode 返回任意 code
 func SendCode(ctx *fiber.Ctx, c code.Code) error {
-	return ctx.JSON(BasicResponse{
+	return SendJson(ctx, BasicResponse{
 		Code: c,
 		Msg:  code.GetMsg(c),
 	})
@@ -57,7 +62,7 @@ func SendCode(ctx *fiber.Ctx, c code.Code) error {
 
 // SendDataOk 请求响应成功，并返回数据
 func SendDataOk[DATA any](ctx *fiber.Ctx, data DATA) error {
-	return ctx.JSON(DataResponse[DATA]{
+	return SendJson(ctx, DataResponse[DATA]{
 		BasicResponse: BasicResponse{
 			Code: code.SUCCESS,
 			Msg:  code.GetMsg(code.SUCCESS),
@@ -68,7 +73,7 @@ func SendDataOk[DATA any](ctx *fiber.Ctx, data DATA) error {
 
 // SendDataCode 并返回数据，并指定 code
 func SendDataCode[DATA any](ctx *fiber.Ctx, data DATA, c code.Code) error {
-	return ctx.JSON(DataResponse[DATA]{
+	return SendJson(ctx, DataResponse[DATA]{
 		BasicResponse: BasicResponse{
 			Code: c,
 			Msg:  code.GetMsg(c),
@@ -79,7 +84,7 @@ func SendDataCode[DATA any](ctx *fiber.Ctx, data DATA, c code.Code) error {
 
 // SendPageDataOk 请求响应成功，并返回分页数据
 func SendPageDataOk[DATA any](ctx *fiber.Ctx, data DATA, page, pageSize int, total int64) error {
-	return ctx.JSON(DataResponse[PageResponse[DATA]]{
+	return SendJson(ctx, DataResponse[PageResponse[DATA]]{
 		BasicResponse: BasicResponse{
 			Code: code.SUCCESS,
 			Msg:  code.GetMsg(code.SUCCESS),
@@ -95,11 +100,36 @@ func SendPageDataOk[DATA any](ctx *fiber.Ctx, data DATA, page, pageSize int, tot
 
 // SendParamsParseFailed 返回解析失败的字段信息
 func SendParamsParseFailed(ctx *fiber.Ctx, failedFields []*FailedField) error {
-	return ctx.JSON(ParamsParseFailedResponse{
+	return SendJson(ctx, ParamsParseFailedResponse{
 		BasicResponse: BasicResponse{
 			Code: code.ParamsParseFailed,
 			Msg:  code.GetMsg(code.ParamsParseFailed),
 		},
 		FailedFields: failedFields,
+	})
+}
+
+// SendError 根据 err 确定返回内容
+// 如果 err 为 nil,则返回 Success
+// 如果 err 为 *code.Error,则返回对应的 code 和 msg
+// 如果 err 不为 nil,则返回 Failed
+func SendError(ctx *fiber.Ctx, err error) error {
+	if err == nil {
+		return SendJson(ctx, BasicResponse{
+			Code: code.SUCCESS,
+			Msg:  code.GetMsg(code.SUCCESS),
+		})
+	}
+
+	if e, ok := err.(*code.Error); ok {
+		return SendJson(ctx, BasicResponse{
+			Code: e.Code,
+			Msg:  code.GetMsg(e.Code),
+		})
+	}
+
+	return SendJson(ctx, BasicResponse{
+		Code: code.Failed,
+		Msg:  code.GetMsg(code.Failed),
 	})
 }

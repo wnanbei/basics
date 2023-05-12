@@ -27,3 +27,22 @@ var codeMsg = map[Code]string{
 func GetMsg(code Code) string {
 	return codeMsg[code]
 }
+
+// Error 携带 code 的 error
+type Error struct {
+	Code Code
+	Err  error
+}
+
+// NewError 构造 error
+func NewError(code Code, err error) Error {
+	return Error{
+		Code: code,
+		Err:  err,
+	}
+}
+
+// Error ...
+func (e Error) Error() string {
+	return GetMsg(e.Code) + ": " + e.Err.Error()
+}
