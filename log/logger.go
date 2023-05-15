@@ -2,47 +2,45 @@ package log
 
 import (
 	"context"
-	"io"
 
-	"github.com/galaxy-toolkit/server/config"
 	"golang.org/x/exp/slog"
 )
 
 // Logger 日志
-var Logger *slog.Logger
-var LoggerWriter io.Writer
+type Logger struct {
+	*slog.Logger
+}
 
-// InitLogger 初始化日志
-func InitLogger(conf config.Log) {
-	LoggerWriter = Writer(conf)
+func (l *Logger) Debug(ctx context.Context, msg string, args ...slog.Attr) {
+	l.Logger.LogAttrs(ctx, slog.LevelDebug, msg, AppendAttrs(ctx, args)...)
+}
 
-	logger, err := New(conf, LoggerWriter)
-	if err != nil {
-		panic(err)
+func (l *Logger) Info(ctx context.Context, msg string, args ...slog.Attr) {
+	l.Logger.LogAttrs(ctx, slog.LevelInfo, msg, AppendAttrs(ctx, args)...)
+}
+
+func (l *Logger) Warn(ctx context.Context, msg string, args ...slog.Attr) {
+	l.Logger.LogAttrs(ctx, slog.LevelWarn, msg, AppendAttrs(ctx, args)...)
+}
+
+func (l *Logger) Error(ctx context.Context, msg string, args ...slog.Attr) {
+	l.Logger.LogAttrs(ctx, slog.LevelError, msg, AppendAttrs(ctx, args)...)
+}
+
+func (l *Logger) With(args ...any) *Logger {
+	return &Logger{
+		Logger: l.Logger.With(args...),
 	}
-	Logger = logger
 }
 
-// Debug 日志
-func Debug(ctx context.Context, msg string, args ...interface{}) {
-	args = append(args, "requestid", ctx.Value("requestid"))
-	Logger.DebugCtx(ctx, msg, args...)
+func (l *Logger) WithGroup(group string) *Logger {
+	return &Logger{
+		Logger: l.Logger.WithGroup(group),
+	}
 }
 
-// Info 日志
-func Info(ctx context.Context, msg string, args ...interface{}) {
-	args = append(args, "requestid", ctx.Value("requestid"))
-	Logger.InfoCtx(ctx, msg, args...)
-}
-
-// Warn 日志
-func Warn(ctx context.Context, msg string, args ...interface{}) {
-	args = append(args, "requestid", ctx.Value("requestid"))
-	Logger.WarnCtx(ctx, msg, args...)
-}
-
-// Error 日志
-func Error(ctx context.Context, msg string, args ...interface{}) {
-	args = append(args, "requestid", ctx.Value("requestid"))
-	Logger.ErrorCtx(ctx, msg, args...)
+func AppendAttrs(ctx context.Context, attrs []slog.Attr) []slog.Attr {
+	return append(attrs,
+		slog.String("requestid", ctx.Value("requestid").(string)),
+	)
 }
