@@ -18,6 +18,7 @@ type Server struct {
 	Env           Env    `json:"env" mapstructure:"env"`                       // 所属环境
 	EnableSwagger bool   `json:"enable_swagger" mapstructure:"enable_swagger"` // 是否开启 swagger 文档
 	Title         string `json:"title" mapstructure:"title"`                   // 服务标题名称，用于 swagger
+	Monitor       bool   `json:"monitor" mapstructure:"monitor"`               // 是否开启可视化监控
 }
 
 // Env 运行环境
@@ -70,4 +71,49 @@ type Redis struct {
 	Port     int    `json:"port" mapstructure:"port"`
 	Password string `json:"password" mapstructure:"password"`
 	Database int    `json:"database" mapstructure:"database"`
+}
+
+func DefaultConfig() *Config {
+	return &Config{
+		Server: Server{
+			Host:          "127.0.0.1",
+			Port:          "9999",
+			Version:       "v1.0.0",
+			BasePath:      "/",
+			Env:           DEV,
+			EnableSwagger: true,
+			Title:         "server",
+			Monitor:       true,
+		},
+		Log: Log{
+			Path:       "logs",
+			Filename:   "server.log",
+			Level:      slog.LevelDebug,
+			MaxSize:    128,
+			MaxBackups: 10,
+			MaxAge:     30,
+		},
+		Database: Database{
+			MySQL: MySQL{
+				Host:     "127.0.0.1",
+				Port:     "3306",
+				UserName: "root",
+				Password: "root",
+				Database: "server",
+			},
+			Postgres: Postgres{
+				Host:     "127.0.0.1",
+				Port:     "5432",
+				UserName: "root",
+				Password: "root",
+				Database: "server",
+			},
+			Redis: Redis{
+				Host:     "127.0.0.1",
+				Port:     6379,
+				Password: "",
+				Database: 0,
+			},
+		},
+	}
 }
