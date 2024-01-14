@@ -1,16 +1,17 @@
 package server
 
 import (
-	"github.com/gofiber/fiber/v2/utils"
 	"io"
 	"runtime"
 	"time"
 
 	"github.com/galaxy-toolkit/server/config"
+	"github.com/galaxy-toolkit/server/constant"
 	"github.com/gofiber/fiber/v2"
 	"github.com/gofiber/fiber/v2/middleware/limiter"
 	"github.com/gofiber/fiber/v2/middleware/logger"
 	"github.com/gofiber/fiber/v2/middleware/session"
+	"github.com/gofiber/fiber/v2/utils"
 	"github.com/gofiber/storage/redis/v2"
 	"github.com/spf13/viper"
 )
@@ -62,7 +63,7 @@ func NewSessionStore(conf config.Redis) *session.Store {
 	return session.New(session.Config{
 		Expiration:        24 * time.Hour,
 		Storage:           store,
-		KeyLookup:         "cookie:session_id",
+		KeyLookup:         constant.RedisKeyUserSession,
 		CookieDomain:      "",
 		CookiePath:        "",
 		CookieSecure:      false,

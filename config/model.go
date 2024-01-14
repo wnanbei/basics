@@ -9,7 +9,7 @@ type Config struct {
 	Database Database `json:"database" mapstructure:"database"` // 数据库配置
 }
 
-// Server 常用配置
+// Server 服务配置
 type Server struct {
 	Host          string `json:"host" mapstructure:"host"`                     // host
 	Port          string `json:"port" mapstructure:"port"`                     // 端口
@@ -73,7 +73,7 @@ type Redis struct {
 	Database int    `json:"database" mapstructure:"database"`
 }
 
-func DefaultConfig() *Config {
+func defaultConfig() *Config {
 	return &Config{
 		Server: Server{
 			Host:          "127.0.0.1",

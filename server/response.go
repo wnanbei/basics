@@ -1,7 +1,7 @@
 package server
 
 import (
-	"github.com/galaxy-toolkit/server/server/code"
+	"github.com/galaxy-toolkit/server/constant/code"
 	"github.com/gofiber/fiber/v2"
 )
 
