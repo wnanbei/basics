@@ -8,7 +8,7 @@ import (
 func TestLoadConfig(t *testing.T) {
 	var config Config
 
-	err := Load("", &config)
+	err := Load("config.yaml", &config)
 	if err != nil {
 		t.Fatal(err)
 	}

@@ -10,7 +10,7 @@ import (
 )
 
 // New 根据配置生成 Postgres 数据库实例
-func New(conf config.Postgres) (*gorm.DB, error) {
+func New(conf *config.Postgres) (*gorm.DB, error) {
 	dsn := fmt.Sprintf(
 		"host=%s user=%s password=%s dbname=%s port=%s sslmode=disable TimeZone=Asia/Shanghai",
 		conf.Host,
@@ -36,7 +36,7 @@ type GeneratorConfig struct {
 }
 
 // NewGenerator 创建 Gorm 生成器
-func NewGenerator(conf config.Postgres, gConf GeneratorConfig) (*gen.Generator, error) {
+func NewGenerator(conf *config.Postgres, gConf *GeneratorConfig) (*gen.Generator, error) {
 	db, err := New(conf)
 	if err != nil {
 		return nil, err

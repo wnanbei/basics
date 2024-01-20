@@ -70,7 +70,7 @@ func LoadAndWatch[C any](path string, c *C) error {
 // defaultConfigPath 获取默认的配置文件路径，为 go.mod 文件所处的位置
 func defaultConfigPath(filename string) string {
 	if filename == "" {
-		filename = "config.json"
+		filename = "config.yaml"
 	}
 	return filepath.Join(goModDir(""), filename)
 }
