@@ -3,7 +3,7 @@ package postgres
 import (
 	"testing"
 
-	"github.com/galaxy-toolkit/server/config"
+	"github.com/wnanbei/basics/config"
 )
 
 func TestMySQLGenerator(t *testing.T) {

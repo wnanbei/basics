@@ -1,4 +1,4 @@
-module github.com/galaxy-toolkit/server
+module github.com/wnanbei/basics
 
 go 1.20
 

@@ -3,7 +3,7 @@ package postgres
 import (
 	"fmt"
 
-	"github.com/galaxy-toolkit/server/config"
+	"github.com/wnanbei/basics/config"
 	"gorm.io/driver/postgres"
 	"gorm.io/gen"
 	"gorm.io/gorm"

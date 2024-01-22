@@ -5,8 +5,6 @@ import (
 	"runtime"
 	"time"
 
-	"github.com/galaxy-toolkit/server/config"
-	"github.com/galaxy-toolkit/server/constant"
 	"github.com/gofiber/fiber/v2"
 	"github.com/gofiber/fiber/v2/middleware/limiter"
 	"github.com/gofiber/fiber/v2/middleware/logger"
@@ -14,6 +12,8 @@ import (
 	"github.com/gofiber/fiber/v2/utils"
 	"github.com/gofiber/storage/redis/v2"
 	"github.com/spf13/viper"
+	"github.com/wnanbei/basics/config"
+	"github.com/wnanbei/basics/constant"
 )
 
 // NewLoggerHandler 创建服务日志中间件

@@ -3,8 +3,8 @@ package redis
 import (
 	"strconv"
 
-	"github.com/galaxy-toolkit/server/config"
 	"github.com/redis/go-redis/v9"
+	"github.com/wnanbei/basics/config"
 )
 
 // New 根据配置生成 Postgres 数据库实例

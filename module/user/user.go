@@ -1,8 +1,8 @@
 package user
 
 import (
-	"github.com/galaxy-toolkit/server/config"
-	"github.com/galaxy-toolkit/server/db/postgres"
+	"github.com/wnanbei/basics/config"
+	"github.com/wnanbei/basics/db/postgres"
 )
 
 // User 用户

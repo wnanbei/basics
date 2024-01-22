@@ -1,8 +1,8 @@
 package server
 
 import (
-	"github.com/galaxy-toolkit/server/constant/code"
 	"github.com/gofiber/fiber/v2"
+	"github.com/wnanbei/basics/constant/code"
 )
 
 // BasicResponse 基础请求响应

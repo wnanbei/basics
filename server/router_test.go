@@ -3,8 +3,8 @@ package server
 import (
 	"testing"
 
-	"github.com/galaxy-toolkit/server/config"
-	"github.com/galaxy-toolkit/server/log"
+	"github.com/wnanbei/basics/config"
+	"github.com/wnanbei/basics/log"
 )
 
 func TestRouter(t *testing.T) {
