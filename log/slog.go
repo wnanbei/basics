@@ -50,7 +50,7 @@ func New(log config.Log, writer io.Writer) (*Logger, error) {
 		ReplaceAttr: replace,
 	}
 
-	return &Logger{slog.New(opts.NewJSONHandler(writer))}, nil
+	return &Logger{slog.New(slog.NewJSONHandler(writer, &opts))}, nil
 }
 
 // LoggerWriter 日志写入

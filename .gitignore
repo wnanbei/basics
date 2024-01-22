@@ -20,7 +20,3 @@ vendor/
 
 # macos
 .DS_Store
-
-# config
-config.json
-config.yaml

@@ -1,0 +1,12 @@
+database:
+  postgres:
+    host: 192.168.5.25
+    port: 16853
+    username: wnanbei
+    password: Xuanxi1217
+    database: wnanbei
+  redis:
+    host: 192.168.5.25
+    port: 16852
+    password: Xuanxi1217
+    database: 0

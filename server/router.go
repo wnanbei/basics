@@ -5,7 +5,7 @@ import (
 	jsoniter "github.com/json-iterator/go"
 )
 
-func NewRouter() *fiber.App {
+func DefaultRouter() *fiber.App {
 	app := fiber.New(
 		fiber.Config{
 			JSONEncoder: jsoniter.ConfigCompatibleWithStandardLibrary.Marshal,

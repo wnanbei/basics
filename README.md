@@ -1,3 +1,3 @@
-# server
+# basics
 
 server tools and templates
