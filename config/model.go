@@ -1,6 +1,6 @@
 package config
 
-import "golang.org/x/exp/slog"
+import "log/slog"
 
 // Config 通用配置模版
 type Config struct {
@@ -30,9 +30,18 @@ const (
 	Prod Env = "prod" // 生产环境
 )
 
+// LogType 日志类型
+type LogType string
+
+const (
+	Stdout LogType = "stdout" // 标准输出
+	File   LogType = "file"   // 文件输出
+)
+
 // Log 日志配置
 type Log struct {
 	Path       string     `json:"path" mapstructure:"path"`               // 日志存放路径
+	Type       LogType    `json:"type" mapstructure:"type"`               // 日志类型。stdout:标准输出，file:文件输出
 	Filename   string     `json:"filename" mapstructure:"filename"`       // 日志文件名
 	Level      slog.Level `json:"level" mapstructure:"level"`             // 日志级别。-4:debug, 0:info, 4:warn, 8:error
 	MaxSize    int        `json:"max_size" mapstructure:"max_size"`       // 单个日志文件最大大小，单位：MB
