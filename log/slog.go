@@ -2,19 +2,19 @@ package log
 
 import (
 	"log/slog"
-	"path/filepath"
 
 	"github.com/wnanbei/basics/config"
 )
 
 // InitLogger 初始化日志
-func Init(logconf config.Log) {
+func Init(logconf config.Log) error {
 	logger, err := New(logconf)
 	if err != nil {
-		panic(err)
+		return err
 	}
 
 	slog.SetDefault(logger)
+	return nil
 }
 
 // New 创建日志实例
@@ -25,10 +25,6 @@ func New(logConf config.Log) (*slog.Logger, error) {
 	}
 
 	replace := func(groups []string, a slog.Attr) slog.Attr {
-		// Remove the directory from the source's filename.
-		if a.Key == slog.SourceKey {
-			a.Value = slog.StringValue(filepath.Base(a.Value.String()))
-		}
 		return a
 	}
 
