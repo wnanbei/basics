@@ -11,14 +11,13 @@ type Config struct {
 
 // Server 服务配置
 type Server struct {
-	Host          string `json:"host" mapstructure:"host"`                     // host
-	Port          string `json:"port" mapstructure:"port"`                     // 端口
-	Version       string `json:"version" mapstructure:"version"`               // 服务版本
-	BasePath      string `json:"base_path" mapstructure:"base_path"`           // 根路径
-	Env           Env    `json:"env" mapstructure:"env"`                       // 所属环境
-	EnableSwagger bool   `json:"enable_swagger" mapstructure:"enable_swagger"` // 是否开启 swagger 文档
-	Title         string `json:"title" mapstructure:"title"`                   // 服务标题名称，用于 swagger
-	Monitor       bool   `json:"monitor" mapstructure:"monitor"`               // 是否开启可视化监控
+	Host             string `json:"host" mapstructure:"host"`                         // host
+	Port             string `json:"port" mapstructure:"port"`                         // 端口
+	Version          string `json:"version" mapstructure:"version"`                   // 服务版本
+	BasePath         string `json:"base_path" mapstructure:"base_path"`               // 根路径
+	Env              Env    `json:"env" mapstructure:"env"`                           // 所属环境
+	Monitor          bool   `json:"monitor" mapstructure:"monitor"`                   // 是否开启可视化监控
+	GlobalLimiterMax int    `json:"globalLimiterMax" mapstructure:"globalLimiterMax"` // 全局限流器最大值
 }
 
 // Env 运行环境
@@ -85,14 +84,12 @@ type Redis struct {
 func defaultConfig() *Config {
 	return &Config{
 		Server: Server{
-			Host:          "127.0.0.1",
-			Port:          "9999",
-			Version:       "v1.0.0",
-			BasePath:      "/",
-			Env:           DEV,
-			EnableSwagger: true,
-			Title:         "server",
-			Monitor:       true,
+			Host:     "127.0.0.1",
+			Port:     "9999",
+			Version:  "v1.0.0",
+			BasePath: "/",
+			Env:      DEV,
+			Monitor:  true,
 		},
 		Log: Log{
 			Path:       "logs",

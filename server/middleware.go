@@ -13,16 +13,17 @@ import (
 	"github.com/gofiber/fiber/v2/middleware/session"
 	"github.com/gofiber/fiber/v2/utils"
 	"github.com/gofiber/storage/redis/v2"
-	"github.com/spf13/viper"
+
 	"github.com/wnanbei/basics/config"
 	"github.com/wnanbei/basics/constant"
+	basicCtx "github.com/wnanbei/basics/context"
 	"github.com/wnanbei/basics/log"
 )
 
 // NewLimiterHandler 创建限流器中间件
 func NewLimiterHandler(conf config.Server) fiber.Handler {
 	limiterConfig := limiter.Config{
-		Max:        viper.GetInt("server.globalLimiterMax"),
+		Max:        conf.GlobalLimiterMax,
 		Expiration: 1 * time.Minute,
 		KeyGenerator: func(c *fiber.Ctx) string {
 			return c.IP()
@@ -81,12 +82,12 @@ const (
 	TagUA                = "ua"
 	TagLatency           = "latency"
 	TagStatus            = "status"
-	TagQueryStringParams = "queryParams"
-	TagReqBody           = "reqBody"
-	TagReqHeaders        = "reqHeaders"
-	TagResBody           = "resBody"
+	TagQueryStringParams = "query"
+	TagReqBody           = "req_body"
+	TagReqHeaders        = "req_headers"
+	TagResBody           = "res_body"
 	TagError             = "error"
-	TagTraceID           = "traceid"
+	TagTraceID           = "trace_id"
 )
 
 // NewSlogMiddleware creates a new slog middleware handler
@@ -131,7 +132,7 @@ func NewSlogMiddleware() fiber.Handler {
 		}
 
 		slog.LogAttrs(
-			c.Context(), slog.LevelInfo, "request info",
+			c.UserContext(), slog.LevelInfo, "request info",
 			slog.String(TagPid, pid),
 			slog.String(TagReferer, c.Get("Referer")),
 			slog.String(TagProtocol, c.Protocol()),
@@ -152,5 +153,30 @@ func NewSlogMiddleware() fiber.Handler {
 		)
 
 		return nil
+	}
+}
+
+const (
+	// HeaderTraceID is the header key for trace id
+	HeaderTraceID = "X-Request-ID"
+)
+
+// NewTraceMiddleware creates a new trace middleware handler
+func NewTraceMiddleware() fiber.Handler {
+	return func(c *fiber.Ctx) error {
+		// Get id from request, else we generate one
+		traceID := c.Get(HeaderTraceID)
+		if traceID == "" {
+			traceID = utils.UUID()
+		}
+
+		// Set new id to response header
+		c.Set(HeaderTraceID, traceID)
+
+		// Add the request ID to locals
+		ctx := basicCtx.WithTraceID(c.Context(), traceID)
+		c.SetUserContext(ctx)
+
+		return c.Next()
 	}
 }
