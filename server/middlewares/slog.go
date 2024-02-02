@@ -1,71 +1,16 @@
-package server
+package middlewares
 
 import (
 	"log/slog"
 	"os"
-	"runtime"
 	"strconv"
 	"sync"
 	"time"
 
 	"github.com/gofiber/fiber/v2"
-	"github.com/gofiber/fiber/v2/middleware/limiter"
-	"github.com/gofiber/fiber/v2/middleware/session"
-	"github.com/gofiber/fiber/v2/utils"
-	"github.com/gofiber/storage/redis/v2"
 
-	"github.com/wnanbei/basics/config"
-	"github.com/wnanbei/basics/constant"
-	basicCtx "github.com/wnanbei/basics/context"
 	"github.com/wnanbei/basics/log"
 )
-
-// NewLimiterHandler 创建限流器中间件
-func NewLimiterHandler(conf config.Server) fiber.Handler {
-	limiterConfig := limiter.Config{
-		Max:        conf.GlobalLimiterMax,
-		Expiration: 1 * time.Minute,
-		KeyGenerator: func(c *fiber.Ctx) string {
-			return c.IP()
-		},
-		LimitReached: func(c *fiber.Ctx) error {
-			return c.SendStatus(fiber.StatusTooManyRequests)
-		},
-		SkipFailedRequests:     false,
-		SkipSuccessfulRequests: false,
-		LimiterMiddleware:      limiter.SlidingWindow{},
-	}
-	return limiter.New(limiterConfig)
-}
-
-// NewSessionStore 创建 session 存储
-func NewSessionStore(conf config.Redis) *session.Store {
-	store := redis.New(redis.Config{
-		Host:      conf.Host,
-		Port:      conf.Port,
-		Username:  "",
-		Password:  conf.Password,
-		Database:  conf.Database,
-		Reset:     false,
-		TLSConfig: nil,
-		PoolSize:  10 * runtime.GOMAXPROCS(0),
-	})
-
-	return session.New(session.Config{
-		Expiration:        24 * time.Hour,
-		Storage:           store,
-		KeyLookup:         constant.RedisKeyUserSession,
-		CookieDomain:      "",
-		CookiePath:        "",
-		CookieSecure:      false,
-		CookieHTTPOnly:    false,
-		CookieSameSite:    "Lax",
-		CookieSessionOnly: false,
-		KeyGenerator: func() string {
-			return "session:" + utils.UUIDv4()
-		},
-	})
-}
 
 // Logger variables
 const (
@@ -153,30 +98,5 @@ func NewSlogMiddleware() fiber.Handler {
 		)
 
 		return nil
-	}
-}
-
-const (
-	// HeaderTraceID is the header key for trace id
-	HeaderTraceID = "X-Request-ID"
-)
-
-// NewTraceMiddleware creates a new trace middleware handler
-func NewTraceMiddleware() fiber.Handler {
-	return func(c *fiber.Ctx) error {
-		// Get id from request, else we generate one
-		traceID := c.Get(HeaderTraceID)
-		if traceID == "" {
-			traceID = utils.UUID()
-		}
-
-		// Set new id to response header
-		c.Set(HeaderTraceID, traceID)
-
-		// Add the request ID to locals
-		ctx := basicCtx.WithTraceID(c.Context(), traceID)
-		c.SetUserContext(ctx)
-
-		return c.Next()
 	}
 }
